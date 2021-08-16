@@ -12,6 +12,7 @@ webstat
 
 # upload, logs, backups, temp & test, old
 /upload
+/upload_import
 /_log/git
 /*.sql
 *.tmp

@@ -27,11 +27,11 @@ function GetEntityDataClass($hlBlockId)
     {
         return false;
     }
-	
-    $hlblock = HighloadBlockTable::getById($hlBlockId)->fetch();   
+
+    $hlblock = HighloadBlockTable::getById($hlBlockId)->fetch();
     $entity = HighloadBlockTable::compileEntity($hlblock);
     $entityDataClass = $entity->getDataClass();
-	
+
     return $entityDataClass;
 }
 
@@ -57,7 +57,7 @@ else
 			);?>
         </div>
     </nav>
-    
+
     <!-- Product -->
     <section class="page product">
         <? if ($arParams["USE_COMPARE"] === "Y")
@@ -80,7 +80,7 @@ else
 				array("HIDE_ICONS" => "Y")
 			);
 		}
-		
+
 		$componentElementParams = array(
 			'IBLOCK_TYPE' => $arParams['IBLOCK_TYPE'],
 			'IBLOCK_ID' => $arParams['IBLOCK_ID'],
@@ -247,14 +247,14 @@ else
 		{
 			$componentElementParams['USER_CONSENT_IS_LOADED'] = $arParams['USER_CONSENT_IS_LOADED'];
 		}
-		
+
 		$elementId = $APPLICATION->IncludeComponent(
 			'bitrix:catalog.element',
 			'',
 			$componentElementParams,
 			$component
 		);
-		
+
 		$GLOBALS['CATALOG_CURRENT_ELEMENT_ID'] = $elementId;
 		?>
     </section>
@@ -265,33 +265,33 @@ else
 	$collectionId = false;
 	$collectionName = '';
 	$arCollectionProducts = $arCollectionSections = array();
-	
+
 	$obCollection = \CIBlockElement::GetProperty(
 		$arParams['IBLOCK_ID'],
 		$elementId,
 		array("sort" => "asc"),
 		array("CODE" => "COLLECTION")
 	);
-	
+
 	if ($arCollection = $obCollection->Fetch())
 	{
 		$entityDataClass = GetEntityDataClass(CollectionHighloadBlockId);
-		
+
 		$obData = $entityDataClass::getList(
 			array(
 			   'select' => array('UF_NAME'),
 			   'filter' => array('UF_XML_ID' => $arCollection['VALUE'])
 			)
 		);
-		
+
 		if ($arData = $obData->Fetch())
 		{
 			$collectionName = $arData['UF_NAME'];
 		}
-		
+
 		$collectionId = $arCollection['VALUE'];
 	}
-	
+
 	if ($collectionId)
 	{
 		$dbCollectionProducts = \CIBlockElement::GetList(
@@ -299,13 +299,13 @@ else
 			array('PROPERTY_COLLECTION' => $collectionId),
 			array('ID', 'IBLOCK_ID', 'IBLOCK_SECTION_ID')
 		);
-		
+
 		while($arCollectionProduct = $dbCollectionProducts->Fetch())
 		{
 			$arCollectionProducts[] = $arCollectionProduct;
 		}
 	}
-	
+
 	if (!empty($arCollectionProducts))
 	{
 		foreach($arCollectionProducts as $arProduct)
@@ -316,7 +316,7 @@ else
 			}
 		}
 	}
-	
+
 	if (!empty($arCollectionSections) && $collectionId)
 	{ ?>
 	<!-- Collection -->
@@ -330,7 +330,7 @@ else
 					<? foreach($arCollectionSections as $key => $sectionId)
 					{
 						$obCollectSection = \CIBlockSection::GetByID($sectionId);
-						
+
 						if ($arCollectSection = $obCollectSection->Fetch())
 						{ ?>
 						<div<?if (!$key) { echo ' class="active"'; }?>>
@@ -344,9 +344,9 @@ else
 				<div class="tab-content<?if (!$key) { echo '  active'; }?>">
 					<?
 						global ${'arrCollectFilter_' . $sectionId};
-						
+
 						$filterName = "arrCollectFilter_{$sectionId}";
-						
+
 						${$filterName}['IBLOCK_SECTION_ID'] = $sectionId;
 						${$filterName}['PROPERTY_COLLECTION'] = $collectionId;
 						//${$filterName}['!=ID'] = $elementId;
@@ -555,8 +555,8 @@ else
 					<?
 					$GLOBALS['arrFilter'] = array('ID' => $iddArr);
 					$APPLICATION->IncludeComponent(
-						"bitrix:catalog.section", 
-						"product_slider", 
+						"bitrix:catalog.section",
+						"product_slider",
 						array(
 							"ACTION_VARIABLE" => "action",
 							"ADD_PICT_PROP" => "-",
@@ -813,7 +813,7 @@ else
 
 				$obCache->EndDataCache($recommendedData);
 			}
-			
+
 			if (!empty($recommendedData))
 			{
 			?>
@@ -944,8 +944,8 @@ else
 							);
 							?>
 			</div>
-				<? } 
-				
+				<? }
+
 				if (Loader::includeModule('catalog')
 					&& (!isset($arParams['DETAIL_SHOW_VIEWED']) || $arParams['DETAIL_SHOW_VIEWED'] != 'N'))
 				{
@@ -1058,6 +1058,7 @@ else
 			<? } ?>
 		<? } ?>
     <!-- Bottom Block -->
+<?/*
 <?
 $res = CIBlockSection::GetList(
 	array(),
@@ -1070,30 +1071,30 @@ if ($arSection["PICTURE"])
 {
 	/*$dbIBlockPicture = CFile::GetByID($arSection["PICTURE"]);
 $arSectionPicture = $dbIBlockPicture->GetNext();*/
-	$pathIblockPicture = CFile::GetPath($arSection["PICTURE"]);
-}
+	//$pathIblockPicture = CFile::GetPath($arSection["PICTURE"]);
+//}
 
-if (!empty($arSection)):
-	$sectCnt = CIBlockSection::GetSectionElementsCount($arSection['ID']);
-?>
-    <section class="bottomblock" data-bleed="100" data-parallax="scroll" data-z-index="1" data-speed="0.5"
-             data-image-src="<?=SITE_TEMPLATE_PATH?>/images/bottom-block-1.jpeg "
-             style="background-image: url('<?=SITE_TEMPLATE_PATH?>/images/bottom-block-1.jpeg');">
-        <div class="container">
-            <a href="<?=$arSection['SECTION_PAGE_URL']?>" class="bottomblock-icon">
-                <img src="<?=pathIblockPicture?>" alt="" onerror="this.onerror = null; this.src = '<?=pathIblockPicture?>'">
-            </a>
-            <div class="h1 bottomblock-title"><a href="<?=$arSection['SECTION_PAGE_URL']?>"><?=$arSection['NAME']?></a></div>
-            <div class="bottomblock-note">Всего <?=$sectCnt?></div>
-            <div class="bottomblock-text">
-                <p><?=htmlspecialchars_decode($arSection['PREVIEW_TEXT'])?></p>
-            </div>
-            <a href="<?=$arSection['SECTION_PAGE_URL']?>" class="bottomblock-triangle">
-                <i class="icon icon-triangle-down"></i>
-            </a>
+//if (!empty($arSection)):
+//	$sectCnt = CIBlockSection::GetSectionElementsCount($arSection['ID']);
+//?>
+<?/*
+<section class="bottomblock" data-bleed="100" data-parallax="scroll" data-z-index="1" data-speed="0.5" data-image-src="<?=SITE_TEMPLATE_PATH?>/images/bottom-block-1.jpeg " style="background-image: url('<?=SITE_TEMPLATE_PATH?>/images/bottom-block-1.jpeg');">
+    <div class="container">
+        <a href="<?=$arSection['SECTION_PAGE_URL']?>" class="bottomblock-icon">
+            <img src="<?=$pathIblockPicture?>" alt="" onerror="this.onerror = null; this.src = '<?=$pathIblockPicture?>'">
+        </a>
+        <div class="h1 bottomblock-title"><a href="<?=$arSection['SECTION_PAGE_URL']?>"><?=$arSection['NAME']?></a></div>
+        <div class="bottomblock-note">Всего <?=$sectCnt?></div>
+        <div class="bottomblock-text">
+            <p><?=htmlspecialchars_decode($arSection['PREVIEW_TEXT'])?></p>
         </div>
-    </section>
+        <a href="<?=$arSection['SECTION_PAGE_URL']?>" class="bottomblock-triangle">
+            <i class="icon icon-triangle-down"></i>
+        </a>
+    </div>
+</section>
 <?endif?>
+*/?>
 
 <?if($_REQUEST["set_filter"]){?>
     <script type="text/javascript">

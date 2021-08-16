@@ -74,7 +74,7 @@ $cnt = CIBlock::GetElementCount($arParams["IBLOCK_ID"]);
                 <div class="topblock-content-inner">
                     <div class="topblock-header">
                         <div class="h3 topblock-title"><?=$arIBlock['NAME']?></div>
-                        <div class="topblock-header-note">Всего <?=$cnt?></div>
+<!--                        <div class="topblock-header-note">Всего --><?//=$cnt?><!--</div>-->
                     </div>
                     <div class="topblock-text"><?=$arIBlock['DESCRIPTION']?></div>
 					<?if (count($arSections)):?>
@@ -171,8 +171,10 @@ if ($iRequestDesigner)
 	),
 	$component
 );?>
-        </div>
-    </section>
+    </div>
+</section>
+
+<?/*
 <?if (count($arSections)):
 $arSection = $arSections[0];
 $sectCnt = CIBlockSection::GetSectionElementsCount($arSection['ID']);
@@ -189,3 +191,4 @@ $sectCnt = CIBlockSection::GetSectionElementsCount($arSection['ID']);
         </div>
     </section>
 <?endif?>
+*/?>

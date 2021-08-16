@@ -5,9 +5,11 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 if ($arResult["isFormErrors"] == "Y"):?><?=$arResult["FORM_ERRORS_TEXT"];?><?endif;?>
 
-<?echo $arResult["FORM_NOTE"];
+<div class="form-note">
+	<?echo $arResult["FORM_NOTE"];?>
+</div>
 
-if ($arResult["isFormNote"] != "Y")
+<?if ($arResult["isFormNote"] != "Y")
 {
 echo $arResult["FORM_HEADER"];
 
@@ -61,7 +63,7 @@ $count = 1;
 				<?endif;?>
 		<? }
 		else
-		{ 
+		{
 		 	if ($count == 1):?>
 			<div class="question-form-row">
 			<?endif;?>
@@ -70,7 +72,6 @@ $count = 1;
 							<input id="form_<?= $structure['FIELD_TYPE'] . "_" . $structure['ID'] ?>" type="<?=$structure['FIELD_TYPE_PSEUDO'] ?: $structure['FIELD_TYPE']?>" <?= $structure['FIELD_PARAM'] ?>
                                    class="form-input <?= $fieldHasError ? " has-danger" : "" ?> <?= ($structure['ID'] == 2) ? "js-phone" : "" ?>"
                                    name="form_<?= $structure['FIELD_TYPE'] . "_" . $structure['ID'] ?>"
-                                   size="<?= $structure['FIELD_WIDTH'] ?>"
                                 <?= $arQuestion["REQUIRED"] == "Y" ? "required" : "" ?>
                                    value="<?= ($arResult['arrVALUES']['form_' . $structure['FIELD_TYPE'] . '_' . $structure['QUESTION_ID']] ?: $arQuestion['VALUE']) ?>" placeholder="<?= $arQuestion['CAPTION'] ?>" />
                             <span class="form-label-title"><?=$arQuestion["CAPTION"]?></span>
